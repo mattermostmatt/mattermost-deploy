@@ -13,7 +13,7 @@
 
 
 ### Bare Metal Install
-
+#
 Even though it wasn't asked, I tried a bare metal deploy on an EC2 instance to get a more direct idea of the software installation. I don't know how common this is, but I figured it was good exposure.
 
 Download the tar ball and unzip it:
@@ -46,7 +46,7 @@ Mattermost knows how to find your postgres DB. The default config just has gener
 
 
 ### Docker "Preview"
-
+#
 To start, we'll try out the pre-configured Mattermost docker container. Once docker is configured successfully, this is relatively straightforward.
 
     sudo docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview
@@ -72,7 +72,7 @@ Summary: Not much learned. For someone familiar with docker, this is a good and 
 
 
 ### Full Docker Deployment
-
+#
 Let's go for the gold this time and install the full production release. Clone the repo:
 
     git clone https://github.com/mattermost/docker
@@ -107,7 +107,7 @@ Summary: Overall, using the repo was pretty straightforward to install--as it cr
 
 
 ### Extra credit: K8s Deployment
-
+#
 My Kubernetes is rusty. Still, I wanted to try deploying the mattermost operator. I was able to get it deployed, but couldn't get it to come up. Still, the steps are below:
 
 ## Preparation
