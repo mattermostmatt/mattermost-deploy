@@ -14,6 +14,34 @@
 
 ### Bare Metal Install
 
+Even though it wasn't asked, I tried a bare metal deploy on an EC2 instance to get a more direct idea of the software installation. I don't know how common this is, but I figured it was good exposure.
+
+Download the tar ball and unzip it:
+
+      wget https://releases.mattermost.com/10.0.0/mattermost-10.0.0-linux-amd64.tar.gz
+      tar -xvzf mattermost*.gz
+
+Move the service to the /opt directory:
+
+      sudo mv mattermost /opt
+
+Create data folder for assets:
+      
+      sudo mkdir /opt/mattermost/data
+
+Configure the service to own the directory:
+
+      sudo chown -R mattermost:mattermost /opt/mattermost
+
+Create systemd unit file:
+
+      sudo touch /lib/systemd/system/mattermost.service
+
+**Insert remaining steps**
+
+Summary: This is certainly a more laborious way, but more striaghtforward to understand. The service lives entirely in it's subdirectory in /opt, with the raw config files and data storage. Lessons learned? Definitely make sure you edit the config so 
+Mattermost knows how to find your postgres DB. The default config just has generic values and that'll hold everything up.
+
 
 
 
@@ -37,6 +65,10 @@ Finally, paste the public IP of the EC2 instance (or simply localhost if running
 
 
 Once the service loads, step through the configuration, create a trial account with a user and email, and get started!
+
+
+Summary: Not much learned. For someone familiar with docker, this is a good and easy way to test out mattermost without commiting to a full install and config.
+
 
 
 ### Full Docker Deployment
@@ -69,8 +101,8 @@ Considerations:
 1. Before deployment, you could change env file for settings. Or do this and redeploy. Config json is in ./volumes/app/mattermost/
 2. For live config changes, you can jump into the container (docker exec -it CONTAINER_ID bash). Logs are in ./mattermost/logs/mattermost.log. Also config in ./mattermost/config/config.json
 
-    
-Overall, using the repo was pretty straightforward to install--as it creates both the mattermost container and the postgres container. I did some experimenting with a baremetal install as well, which was similar but obviously creating a standalone sql instance.
+
+Summary: Overall, using the repo was pretty straightforward to install--as it creates both the mattermost container and the postgres container as one (like the preview, but also with more control over the config with the env file). 
 
 
 
@@ -94,7 +126,11 @@ My Kubernetes is rusty. Still, I wanted to try deploying the mattermost operator
 
     aws eks update-kubeconfig --region us-east-2 --name mattermost
 
-Create mattermost-license-secret.yml
+    *Check connection*
+
+    kubectl get svc
+
+Create mattermost-license-secret.yml:
 
     apiVersion: v1
     kind: Secret
@@ -103,16 +139,55 @@ Create mattermost-license-secret.yml
     type: Opaque
     stringData:
       license: "foo"
-    
 
+Create installation manifest mattermost-installation.yml:
 
+      apiVersion: installation.mattermost.com/v1beta1
+      kind: Mattermost
+      metadata:
+        name: mm-demo
+      spec:
+        size: 50users
+        ingressName: example-mm-install   
+        ingressAnnotations:
+	      kubernetes.io/ingress.class: nginx
+        version: 5.31.0
+        licenseSecret: "mattermost-license"
 
+Install NGINX Controller:
 
+      kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.46.0/deploy/static/provider/cloud/deploy.yaml
 
+Create mattermost-operator namespace:
 
+      kubectl create ns mattermost-operator
 
+Install the operator:
 
+      kubectl apply -n mattermost-operator -f https://raw.githubusercontent.com/mattermost/mattermost-operator/master/docs/mattermost-operator/mattermost-operator.yaml
 
+Need to install a DB, so first create a namespace:
 
+      kubectl create ns mysql-operator
 
-helm repo add mattermost https://helm.mattermost.com
+And deploy:
+
+      kubectl apply -n mysql-operator -f https://raw.githubusercontent.com/mattermost/mattermost-operator/master/docs/mysql-operator/mysql-operator.yaml
+
+Create namespace and install minIO:
+
+      kubectl create ns minio-operator
+      kubectl apply -n minio-operator -f https://raw.githubusercontent.com/mattermost/mattermost-operator/master/docs/minio-operator/minio-operator.yaml
+
+Create a namespace for Mattermost:
+
+      kubectl create ns mattermost
+
+Apply the license and complete installation:
+
+      kubectl apply -n mattermost -f mattermost-license-secret.yml
+      kubectl apply -n mattermost -f mattermost-installation.yml
+
+And here's where I ran into issues, because the deployment went through--but the pod never became active. Port forwarding didn't work because the service wasn't listening.
+
+Summary: This is by far the most complex install, but I suspect for larger deployment, this is the most scalable. For bare metal or individual containers, thousands of users and assets could easily overwhelm a server--whereas with a cluster, it's far mnore distributed.
