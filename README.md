@@ -14,30 +14,24 @@ I. Docker "Preview"
 
 Before getting started with the Mattermost preview container, we need to set up Docker. I've deployed a fresh Amazon Linux EC2 Instance, and have set it up as below:
 
-**Install Docker
+"sudo yum install docker -y" --*Install Docker*
 
-**"sudo yum install docker -y"
-**
-Set Docker to start on system start
+"sudo systemctl start docker" --*Set Docker to start on system start*
 
-"sudo systemctl start docker"**
-**
-Check to make sure no containers are currently running and test the install
+"sudo docker ps" --*Check to make sure no containers are currently running and test the install*
 
-"sudo docker ps"**
+"sudo curl -L https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-compose-plugin-2.6.0-3.el7.x86_64.rpm -o ./compose-plugin.rpm
+sudo yum install ./compose-plugin.rpm -y" --*Install docker-compose*
 
-sudo curl -L https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-compose-plugin-2.6.0-3.el7.x86_64.rpm -o ./compose-plugin.rpm
-sudo yum install ./compose-plugin.rpm -y
-
-Download/run preview container with default settings in config
+*Now, we'll download and preview the mattermost-preview container, using default configuration:*
 
 docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview
+
+And finally, test to make sure the service is up:
+
 curl localhost:8065
 
-Enter public IP of it with port.
-
-
-Add screenshots
+In a browser, enter the public IP of the EC2 instance (configured for access on the port) with the port, to access your preview install.
 
 
 In Mattermost, 
