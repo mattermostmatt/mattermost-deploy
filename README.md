@@ -9,7 +9,7 @@ III. K8s Deployment
 
 
 
-I. Docker "Preview"
+#I. Docker "Preview"
 
 
 Before getting started with the Mattermost preview container, we need to set up Docker. I've deployed a fresh Amazon Linux EC2 Instance, and have set it up as below:
