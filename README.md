@@ -11,11 +11,21 @@ III. K8s Deployment
 
 I. Docker "Preview"
 
-Set up Docker on a fresh Amazon Linux instance
 
-sudo yum install docker -y
-sudo systemctl start docker
-sudo docker ps
+Before getting started with the Mattermost preview container, we need to set up Docker. I've deployed a fresh Amazon Linux EC2 Instance, and have set it up as below:
+
+**Install Docker
+
+**"sudo yum install docker -y"
+**
+Set Docker to start on system start
+
+"sudo systemctl start docker"**
+**
+Check to make sure no containers are currently running and test the install
+
+"sudo docker ps"**
+
 sudo curl -L https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-compose-plugin-2.6.0-3.el7.x86_64.rpm -o ./compose-plugin.rpm
 sudo yum install ./compose-plugin.rpm -y
 
