@@ -12,39 +12,6 @@
     sudo yum install ./compose-plugin.rpm -y"
 
 
-### Bare Metal Install
-#
-Even though it wasn't asked, I tried a bare metal deploy on an EC2 instance to get a more direct idea of the software installation. I don't know how common this is, but I figured it was good exposure.
-
-Download the tar ball and unzip it:
-
-      wget https://releases.mattermost.com/10.0.0/mattermost-10.0.0-linux-amd64.tar.gz
-      tar -xvzf mattermost*.gz
-
-Move the service to the /opt directory:
-
-      sudo mv mattermost /opt
-
-Create data folder for assets:
-      
-      sudo mkdir /opt/mattermost/data
-
-Configure the service to own the directory:
-
-      sudo chown -R mattermost:mattermost /opt/mattermost
-
-Create systemd unit file:
-
-      sudo touch /lib/systemd/system/mattermost.service
-
-**Insert remaining steps**
-
-Summary: This is certainly a more laborious way, but more striaghtforward to understand. The service lives entirely in it's subdirectory in /opt, with the raw config files and data storage. Lessons learned? Definitely make sure you edit the config so 
-Mattermost knows how to find your postgres DB. The default config just has generic values and that'll hold everything up.
-
-
-
-
 ### Docker "Preview"
 #
 To start, we'll try out the pre-configured Mattermost docker container. Once docker is configured successfully, this is relatively straightforward.
