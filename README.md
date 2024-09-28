@@ -1,5 +1,9 @@
 # Mattermost Interview Project
 
+You can find my intergration publicly accessible (temporarily) at:
+
+http://18.116.62.173:8065
+
 Please find below, in a step by step fashion, the answers/results of the tasks assigned.
 
 
