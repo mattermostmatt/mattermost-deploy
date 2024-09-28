@@ -106,3 +106,4 @@ Finally, I saw all the queries. Nearest I can tell, they're executed in left to 
         2024-09-28 03:33:56.662 UTC [43] DETAIL:  parameters: $1 = ''
         2024-09-28 03:33:56.662 UTC [43] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Commands WHERE DeleteAt = $1
 
+I'm certain if I had more familiary to grep exactly, I'd be able to pinpoint it. :)
