@@ -55,9 +55,13 @@ Change ownership of all folders to the service:
 
 For sake of brevity, I'm skipping the NGINX install and SSO. Please note, it is more secure to not have the public internet hitting mattermost server directly, DDOS, etc
 
+Copy environment example:
+
+    sudo cp env.example .env
+
 Let's deploy:
 
-    sudo docker compose -f docker-compose.without-nginx.yml up -d
+    sudo docker compose -f docker-compose.yml -f docker-compose.without-nginx.yml up -d
 
 Once finished, test and make sure the service is up:
 
