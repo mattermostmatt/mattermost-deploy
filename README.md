@@ -79,7 +79,7 @@ Then, I deployed the containers again and started watching the logs for the post
 
     sudo docker logs --since 30s 19cd4115a80c
 
-Finally, I saw all the queries. Nearest I can tell, they're executed in left to right order, but it's hard to tell the EXACT status query. I found one, but I'm pretty sure it's for active users. But it's close by. I've included the log file I generated as well. It's somewhere in here:
+Finally, I saw all the queries. Nearest I can tell, they're executed in left to right order, but it's hard to tell the EXACT sessions query. I found one, but I'm pretty sure it's for active users. But it's close by. I've included the log file I generated as well. It's somewhere in here:
 
         024-09-28 03:33:56.637 UTC [36] DETAIL:  parameters: $1 = '0'
         2024-09-28 03:33:56.638 UTC [39] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Status AS s LEFT JOIN Bots ON s.UserId = Bots.UserId LEFT JOIN Users ON s.UserId = Users.Id WHERE LastActivityAt > $1             AND Bots.UserId IS NULL AND Users.DeleteAt = 0
