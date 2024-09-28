@@ -16,7 +16,7 @@ For details on the various deployments I tried (all of them), please see assets/
 
 All steps below were accomplished using the Mattermost Production Docker, with a license requested through the console (the one with the Mattermost and Postgres standalone containers).
 
-
+#
     Integrate an LDAP Server and configure at least one group with LDAP Group Sync that you can @-mention within a channel. You can use this Docker image to quickly get
     OpenLDAP running.
 
@@ -40,22 +40,29 @@ In the server settings for AD/LDAP, I filled in the following settings and left 
 Once I had that filled out, I tested connection, synchronized, and then headed over to the Groups configuration panel. There, I selected all the available groups in this server(mathematicians, italians, chemists, etc) and linked them.
 Once linked, I configured each one, turning on "@ mentioning" and adding each of my available channels to the group.
 
-You can see my successful @ mention here 
+You can see my successful @ mention in the Town Squre channel here:
 
 https://postimg.cc/VJY1nk4p
 
+#
 
+    Create a channel and send a message to it using an incoming webhook. You can use a service such as GitHub to send the webhook or manually send it using curl.
 
-Synchronized groups in ldap server - . @ mentioned them in the town square channel
+In the Mattermost console, I created a new channel ("webhook-channel" ). Then, in the system settings, I created a new incoming webhook link, assisgned specifically to this channel. To test, I used the following command:
 
-Incoming Webhook
+_"curl -i -X POST -H 'Content-Type: application/json' -d '{"text": "Hello! Please give me this job. :D 🎉"}' http://localhost:8065/hooks/joze5qowxt8g7pscezzzfef3he"_
 
-Created channel "webhook-channel" in my local isntallation Created incoming webhook in settings, configured for that channel
+You can see the result here:
 
-curl -i -X POST -H 'Content-Type: application/json' -d '{"text": "Hello! Please give me this job. :D 🎉"}' http://localhost:8065/hooks/joze5qowxt8g7pscezzzfef3he
+https://postimg.cc/VJY1nk4p
 
-Incident Simulation Task
+:)
+
+#
+
+    In this task, we are simulating a component of a common pattern encountered by Support Engineers during performance-related incidents. Using whatever means available, find the underlying SQL query that 
+    produces results for the “Total Sessions” panel under “System Console > Site Statistics”
 
 Still working with the postgres container to get it logging all queries (turning logging_statement to 'all' but not getting anything?), but I dug into the source code and found the line that triggers the query:
 
-getStatValue(stats[StatTypes.TOTAL_SESSIONS]
+_getStatValue(stats[StatTypes.TOTAL_SESSIONS]_
