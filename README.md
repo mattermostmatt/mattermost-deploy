@@ -17,7 +17,8 @@ For details on the various deployments I tried (all of them), please see assets/
 All steps below were accomplished using the Mattermost Production Docker, with a license requested through the console (the one with the Mattermost and Postgres standalone containers).
 
 #
-    Integrate an LDAP Server and configure at least one group with LDAP Group Sync that you can @-mention within a channel. You can use this Docker image to quickly get
+    Integrate an LDAP Server and configure at least one group with LDAP Group Sync that 
+    you can @-mention within a channel. You can use this Docker image to quickly get
     OpenLDAP running.
 
 
@@ -46,7 +47,8 @@ https://postimg.cc/VJY1nk4p
 
 #
 
-    Create a channel and send a message to it using an incoming webhook. You can use a service such as GitHub to send the webhook or manually send it using curl.
+    Create a channel and send a message to it using an incoming webhook. You can use a 
+    service such as GitHub to send the webhook or manually send it using curl.
 
 In the Mattermost console, I created a new channel ("webhook-channel" ). Then, in the system settings, I created a new incoming webhook link, assisgned specifically to this channel. To test, I used the following command:
 
@@ -60,9 +62,10 @@ https://postimg.cc/VJY1nk4p
 
 #
 
-    In this task, we are simulating a component of a common pattern encountered by Support Engineers during performance-related incidents. Using whatever means available, find the underlying SQL query that 
+    In this task, we are simulating a component of a common pattern encountered by Support Engineers 
+    during performance-related incidents. Using whatever means available, find the underlying SQL query that 
     produces results for the “Total Sessions” panel under “System Console > Site Statistics”
 
 Still working with the postgres container to get it logging all queries (turning logging_statement to 'all' but not getting anything?), but I dug into the source code and found the line that triggers the query:
 
-_getStatValue(stats[StatTypes.TOTAL_SESSIONS]_
+_getStatValue(stats[StatTypes.TOTAL_SESSIONS])_
