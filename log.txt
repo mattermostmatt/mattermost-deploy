@@ -1,0 +1,371 @@
+2024-09-28 03:51:57.537 UTC [42] LOG:  execute <unnamed>: SELECT * FROM Systems WHERE Name = $12024-09-28 03:51:57.537 UTC [42] DETAIL:  parameters: $1 = 'UpgradedFromTE'
+2024-09-28 03:51:57.537 UTC [42] LOG:  execute <unnamed>: SELECT * FROM Systems WHERE Name = $1
+2024-09-28 03:51:57.537 UTC [42] DETAIL:  parameters: $1 = 'InstallationDate'
+2024-09-28 03:51:57.538 UTC [42] LOG:  statement: SELECT Version FROM db_migrations ORDER BY Version DESC LIMIT 1
+2024-09-28 03:51:57.613 UTC [42] LOG:  execute <unnamed>: SELECT Id, Name, DisplayName, Description, CreateAt, UpdateAt, DeleteAt, Permissions, SchemeManaged, BuiltIn FROM Roles WHERE Name IN ($1,$2)
+2024-09-28 03:51:57.613 UTC [42] DETAIL:  parameters: $1 = 'system_admin', $2 = 'system_user'
+2024-09-28 03:51:57.614 UTC [42] LOG:  statement:                        SELECT
+                                '' AS GuestRoleName,
+                                RoleSchemes.DefaultChannelUserRole AS UserRoleName,
+                                RoleSchemes.DefaultChannelAdminRole AS AdminRoleName,
+                                '' AS HigherScopedGuestPermissions,
+                                UserRoles.Permissions AS HigherScopedUserPermissions,
+                                AdminRoles.Permissions AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes AS RoleSchemes
+                                JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Schemes ON Schemes.Id = Teams.SchemeId
+                                RIGHT JOIN Roles AS UserRoles ON UserRoles.Name = Schemes.DefaultChannelUserRole                                RIGHT JOIN Roles AS AdminRoles ON AdminRoles.Name = Schemes.DefaultChannelAdminRole
+                        WHERE
+                                RoleSchemes.DefaultChannelUserRole IN ('system_admin', 'system_user')
+                                OR RoleSchemes.DefaultChannelAdminRole IN ('system_admin', 'system_user')
+
+                        UNION
+
+                        SELECT
+                                RoleSchemes.DefaultChannelGuestRole AS GuestRoleName,
+                                '' AS UserRoleName,
+                                '' AS AdminRoleName,
+                                GuestRoles.Permissions AS HigherScopedGuestPermissions,                                '' AS HigherScopedUserPermissions,
+                                '' AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes AS RoleSchemes
+                                JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Schemes ON Schemes.Id = Teams.SchemeId
+                                RIGHT JOIN Roles AS GuestRoles ON GuestRoles.Name = Schemes.DefaultChannelGuestRole
+                        WHERE
+                                RoleSchemes.DefaultChannelGuestRole IN ('system_admin', 'system_user')
+
+                        UNION
+
+                        SELECT
+                                Schemes.DefaultChannelGuestRole AS GuestRoleName,
+                                Schemes.DefaultChannelUserRole AS UserRoleName,
+                                Schemes.DefaultChannelAdminRole AS AdminRoleName,
+                                GuestRoles.Permissions AS HigherScopedGuestPermissions,
+                                UserRoles.Permissions AS HigherScopedUserPermissions,
+                                AdminRoles.Permissions AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes
+                                JOIN Channels ON Channels.SchemeId = Schemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Roles AS GuestRoles ON GuestRoles.Name = 'channel_guest'
+                                JOIN Roles AS UserRoles ON UserRoles.Name = 'channel_user'
+                                JOIN Roles AS AdminRoles ON AdminRoles.Name = 'channel_admin'
+                        WHERE
+                                (Schemes.DefaultChannelGuestRole IN ('system_admin', 'system_user')
+                                OR Schemes.DefaultChannelUserRole IN ('system_admin', 'system_user')
+                                OR Schemes.DefaultChannelAdminRole IN ('system_admin', 'system_user'))
+                        AND (Teams.SchemeId = ''
+                                OR Teams.SchemeId IS NULL)
+
+2024-09-28 03:51:57.701 UTC [42] LOG:  execute <unnamed>: SELECT * FROM Systems WHERE Name = $1
+2024-09-28 03:51:57.701 UTC [42] DETAIL:  parameters: $1 = 'UpgradedFromTE'
+2024-09-28 03:51:57.702 UTC [42] LOG:  execute <unnamed>: SELECT * FROM Systems WHERE Name = $1
+2024-09-28 03:51:57.702 UTC [42] DETAIL:  parameters: $1 = 'InstallationDate'
+2024-09-28 03:51:57.702 UTC [42] LOG:  statement: SELECT Version FROM db_migrations ORDER BY Version DESC LIMIT 1
+2024-09-28 03:51:57.774 UTC [42] LOG:  execute <unnamed>: SELECT u.Id, u.CreateAt, u.UpdateAt, u.DeleteAt, u.Username, u.Password, u.AuthData, u.AuthService, u.Email, u.EmailVerified, u.Nickname, u.FirstName, u.LastName, u.Position, u.Roles, u.AllowMarketing, u.Props, u.NotifyProps, u.LastPasswordUpdate, u.LastPictureUpdate, u.FailedAttempts, u.Locale, u.Timezone, u.MfaActive, u.MfaSecret, b.UserId IS NOT NULL AS IsBot, COALESCE(b.Description, '') AS BotDescription, COALESCE(b.LastIconUpdate, 0) AS BotLastIconUpdate, u.RemoteId FROM Users u LEFT JOIN Bots b ON ( b.UserId = u.Id ) WHERE Id = $1
+2024-09-28 03:51:57.774 UTC [42] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw'
+2024-09-28 03:51:57.775 UTC [42] LOG:  execute <unnamed>:
+                        SELECT *
+                        FROM UserTermsOfService
+                        WHERE UserId = $1
+
+2024-09-28 03:51:57.775 UTC [42] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw'
+2024-09-28 03:51:57.775 UTC [42] LOG:  execute <unnamed>: UPDATE Sessions SET LastActivityAt = $1 WHERE Id = $2
+2024-09-28 03:51:57.775 UTC [42] DETAIL:  parameters: $1 = '1727495517775', $2 = '6m1dfxtb7ifbpy6duunbzccbfc'
+2024-09-28 03:51:57.776 UTC [39] LOG:  execute <unnamed>: SELECT * FROM Preferences WHERE UserId = $1
+2024-09-28 03:51:57.776 UTC [39] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw'
+2024-09-28 03:51:57.777 UTC [39] LOG:  execute <unnamed>: SELECT Teams.* FROM Teams JOIN TeamMembers ON TeamMembers.TeamId = Teams.Id WHERE TeamMembers.DeleteAt = $1 AND TeamMembers.UserId = $2 AND Teams.DeleteAt = $3
+2024-09-28 03:51:57.777 UTC [39] DETAIL:  parameters: $1 = '0', $2 = '6ttg4cmhcbb53pnqtq78r555gw', $3 = '0'
+2024-09-28 03:51:57.779 UTC [42] LOG:  execute <unnamed>: SELECT TeamMembers.*, TeamScheme.DefaultTeamGuestRole TeamSchemeDefaultGuestRole, TeamScheme.DefaultTeamUserRole TeamSchemeDefaultUserRole, TeamScheme.DefaultTeamAdminRole TeamSchemeDefaultAdminRole FROM TeamMembers LEFT JOIN Teams ON TeamMembers.TeamId = Teams.Id LEFT JOIN Schemes TeamScheme ON Teams.SchemeId = TeamScheme.Id WHERE TeamMembers.UserId = $1
+2024-09-28 03:51:57.779 UTC [42] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw'
+2024-09-28 03:51:57.779 UTC [39] LOG:  execute <unnamed>: SELECT Id, Name, DisplayName, Description, CreateAt, UpdateAt, DeleteAt, Permissions, SchemeManaged, BuiltIn FROM Roles WHERE Name IN ($1,$2)
+2024-09-28 03:51:57.779 UTC [39] DETAIL:  parameters: $1 = 'team_user', $2 = 'team_admin'
+2024-09-28 03:51:57.780 UTC [39] LOG:  statement:
+                        SELECT
+                                '' AS GuestRoleName,
+                                RoleSchemes.DefaultChannelUserRole AS UserRoleName,
+                                RoleSchemes.DefaultChannelAdminRole AS AdminRoleName,
+                                '' AS HigherScopedGuestPermissions,
+                                UserRoles.Permissions AS HigherScopedUserPermissions,
+                                AdminRoles.Permissions AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes AS RoleSchemes
+                                JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Schemes ON Schemes.Id = Teams.SchemeId
+                                RIGHT JOIN Roles AS UserRoles ON UserRoles.Name = Schemes.DefaultChannelUserRole
+                                RIGHT JOIN Roles AS AdminRoles ON AdminRoles.Name = Schemes.DefaultChannelAdminRole
+                        WHERE
+                                RoleSchemes.DefaultChannelUserRole IN ('team_admin', 'team_user')
+                                OR RoleSchemes.DefaultChannelAdminRole IN ('team_admin', 'team_user')
+
+                        UNION
+
+                        SELECT
+                                RoleSchemes.DefaultChannelGuestRole AS GuestRoleName,
+                                '' AS UserRoleName,
+                                '' AS AdminRoleName,
+                                GuestRoles.Permissions AS HigherScopedGuestPermissions,
+                                '' AS HigherScopedUserPermissions,
+                                '' AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes AS RoleSchemes
+                                JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Schemes ON Schemes.Id = Teams.SchemeId
+                                RIGHT JOIN Roles AS GuestRoles ON GuestRoles.Name = Schemes.DefaultChannelGuestRole
+                        WHERE
+                                RoleSchemes.DefaultChannelGuestRole IN ('team_admin', 'team_user')
+
+                        UNION
+
+                        SELECT
+                                Schemes.DefaultChannelGuestRole AS GuestRoleName,
+                                Schemes.DefaultChannelUserRole AS UserRoleName,
+                                Schemes.DefaultChannelAdminRole AS AdminRoleName,
+                                GuestRoles.Permissions AS HigherScopedGuestPermissions,
+                                UserRoles.Permissions AS HigherScopedUserPermissions,
+                                AdminRoles.Permissions AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes
+                                JOIN Channels ON Channels.SchemeId = Schemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Roles AS GuestRoles ON GuestRoles.Name = 'channel_guest'
+                                JOIN Roles AS UserRoles ON UserRoles.Name = 'channel_user'
+                                JOIN Roles AS AdminRoles ON AdminRoles.Name = 'channel_admin'
+                        WHERE
+                                (Schemes.DefaultChannelGuestRole IN ('team_admin', 'team_user')
+                                OR Schemes.DefaultChannelUserRole IN ('team_admin', 'team_user')
+                                OR Schemes.DefaultChannelAdminRole IN ('team_admin', 'team_user'))
+                        AND (Teams.SchemeId = ''
+                                OR Teams.SchemeId IS NULL)
+
+2024-09-28 03:51:57.861 UTC [39] LOG:  execute <unnamed>: SELECT Channels.TeamId TeamId, Channels.Id ChannelId, (Channels.TotalMsgCount - ChannelMembers.MsgCount) MsgCount, (Channels.TotalMsgCountRoot - ChannelMembers.MsgCountRoot) MsgCountRoot, ChannelMembers.MentionCount MentionCount, ChannelMembers.MentionCountRoot MentionCountRoot, ChannelMembers.NotifyProps NotifyProps FROM Channels JOIN ChannelMembers ON Id = ChannelId WHERE DeleteAt = $1 AND UserId = $2 AND TeamId <> $3
+2024-09-28 03:51:57.861 UTC [39] DETAIL:  parameters: $1 = '0', $2 = '6ttg4cmhcbb53pnqtq78r555gw', $3 = ''
+2024-09-28 03:51:57.863 UTC [34] LOG:  execute <unnamed>: SELECT COALESCE(SUM(ThreadMemberships.UnreadMentions),0) AS Count, ThreadTeamId AS TeamId FROM ThreadMemberships LEFT JOIN Threads ON Threads.PostId = ThreadMemberships.PostId WHERE (ThreadMemberships.UserId = $1 AND ThreadMemberships.Following = $2 AND Threads.ThreadTeamId IN ($3) AND COALESCE(Threads.ThreadDeleteAt, 0) = $4) GROUP BY Threads.ThreadTeamId
+2024-09-28 03:51:57.863 UTC [34] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw', $2 = 't', $3 = 'yeur9ix94p8w9dsnnd6u91peac', $4 = '0'
+2024-09-28 03:51:57.864 UTC [42] LOG:  execute <unnamed>: SELECT COUNT(Threads.PostId) AS Count, ThreadTeamId AS TeamId FROM Threads LEFT JOIN ThreadMemberships ON Threads.PostId = ThreadMemberships.PostId WHERE (ThreadMemberships.UserId = $1 AND ThreadMemberships.Following = $2 AND Threads.ThreadTeamId IN ($3) AND COALESCE(Threads.ThreadDeleteAt, 0) = $4) AND Threads.LastReplyAt > ThreadMemberships.LastViewed GROUP BY Threads.ThreadTeamId
+2024-09-28 03:51:57.864 UTC [42] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw', $2 = 't', $3 = 'yeur9ix94p8w9dsnnd6u91peac', $4 = '0'
+2024-09-28 03:51:57.865 UTC [39] LOG:  execute <unnamed>: SELECT COALESCE(SUM(ThreadMemberships.UnreadMentions),0) AS Count, ThreadTeamId AS TeamId FROM ThreadMemberships LEFT JOIN Threads ON Threads.PostId = ThreadMemberships.PostId JOIN PostsPriority ON PostsPriority.PostId = ThreadMemberships.PostId WHERE PostsPriority.Priority = $1 AND (ThreadMemberships.UserId = $2 AND ThreadMemberships.Following = $3 AND Threads.ThreadTeamId IN ($4) AND COALESCE(Threads.ThreadDeleteAt, 0) = $5) GROUP BY Threads.ThreadTeamId
+2024-09-28 03:51:57.865 UTC [39] DETAIL:  parameters: $1 = 'urgent', $2 = '6ttg4cmhcbb53pnqtq78r555gw', $3 = 't', $4 = 'yeur9ix94p8w9dsnnd6u91peac', $5 = '0'
+2024-09-28 03:51:58.081 UTC [39] LOG:  execute <unnamed>: DELETE FROM PluginKeyValueStore WHERE PluginId = $1 AND PKey = $2 AND ExpireAt <> $3 AND ExpireAt < $4
+2024-09-28 03:51:58.081 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'UserLock-6ttg4cmhcbb53pnqtq78r555gw', $3 = '0', $4 = '1727495518080'
+2024-09-28 03:51:58.082 UTC [39] LOG:  execute <unnamed>: INSERT INTO PluginKeyValueStore (PluginId,PKey,PValue,ExpireAt) VALUES ($1,$2,$3,$4)
+2024-09-28 03:51:58.082 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'UserLock-6ttg4cmhcbb53pnqtq78r555gw', $3 = '\x22323032342d30392d32385430333a35313a35382e3038303733363435335a22', $4 = '0'
+2024-09-28 03:51:58.083 UTC [39] LOG:  execute <unnamed>: DELETE FROM PluginKeyValueStore WHERE PluginId = $1 AND Pkey = $2
+2024-09-28 03:51:58.083 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'hlpXHSa/ZEzqf5As7OS4OaICNN2D680hyFr2M4ujkiM='
+2024-09-28 03:51:58.084 UTC [39] LOG:  execute <unnamed>: SELECT PluginId, PKey, PValue, ExpireAt FROM PluginKeyValueStore WHERE PluginId = $1 AND PKey = $2 AND (ExpireAt = $3 OR ExpireAt > $4)
+2024-09-28 03:51:58.084 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'AdminDM-6ttg4cmhcbb53pnqtq78r555gw-8.1.0', $3 = '0', $4 = '1727495518084'
+2024-09-28 03:51:58.085 UTC [39] LOG:  execute <unnamed>: SELECT PluginId, PKey, PValue, ExpireAt FROM PluginKeyValueStore WHERE PluginId = $1 AND PKey = $2 AND (ExpireAt = $3 OR ExpireAt > $4)
+2024-09-28 03:51:58.085 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'jVs0c02GCTJmLVfWxHO+DGTeXZeEo/B4WVO+l2w4gI0=', $3 = '0', $4 = '1727495518084'
+2024-09-28 03:51:58.085 UTC [39] LOG:  execute <unnamed>: DELETE FROM PluginKeyValueStore WHERE PluginId = $1 AND Pkey = $2
+2024-09-28 03:51:58.085 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'hlpXHSa/ZEzqf5As7OS4OaICNN2D680hyFr2M4ujkiM='
+2024-09-28 03:51:58.086 UTC [39] LOG:  execute <unnamed>: DELETE FROM PluginKeyValueStore WHERE PluginId = $1 AND Pkey = $2
+2024-09-28 03:51:58.086 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.nps', $2 = 'UserLock-6ttg4cmhcbb53pnqtq78r555gw'
+2024-09-28 03:51:58.262 UTC [39] LOG:  statement: SELECT Id, CreateAt, Bytes FROM Licenses
+2024-09-28 03:51:58.318 UTC [39] LOG:  execute <unnamed>: SELECT Id, Name, DisplayName, Description, CreateAt, UpdateAt, DeleteAt, Permissions, SchemeManaged, BuiltIn FROM Roles WHERE Name IN ($1,$2,$3,$4,$5,$6)
+2024-09-28 03:51:58.318 UTC [39] DETAIL:  parameters: $1 = 'channel_user', $2 = 'channel_admin', $3 = 'system_user_manager', $4 = 'system_custom_group_admin', $5 = 'system_read_only_admin', $6 = 'system_manager'
+2024-09-28 03:51:58.319 UTC [39] LOG:  statement:
+                        SELECT
+                                '' AS GuestRoleName,
+                                RoleSchemes.DefaultChannelUserRole AS UserRoleName,
+                                RoleSchemes.DefaultChannelAdminRole AS AdminRoleName,
+                                '' AS HigherScopedGuestPermissions,
+                                UserRoles.Permissions AS HigherScopedUserPermissions,
+                                AdminRoles.Permissions AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes AS RoleSchemes
+                                JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Schemes ON Schemes.Id = Teams.SchemeId
+                                RIGHT JOIN Roles AS UserRoles ON UserRoles.Name = Schemes.DefaultChannelUserRole
+                                RIGHT JOIN Roles AS AdminRoles ON AdminRoles.Name = Schemes.DefaultChannelAdminRole
+                        WHERE
+                                RoleSchemes.DefaultChannelUserRole IN ('channel_admin', 'channel_user')
+                                OR RoleSchemes.DefaultChannelAdminRole IN ('channel_admin', 'channel_user')
+
+                        UNION
+
+                        SELECT
+                                RoleSchemes.DefaultChannelGuestRole AS GuestRoleName,
+                                '' AS UserRoleName,
+                                '' AS AdminRoleName,
+                                GuestRoles.Permissions AS HigherScopedGuestPermissions,
+                                '' AS HigherScopedUserPermissions,
+                                '' AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes AS RoleSchemes
+                                JOIN Channels ON Channels.SchemeId = RoleSchemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Schemes ON Schemes.Id = Teams.SchemeId
+                                RIGHT JOIN Roles AS GuestRoles ON GuestRoles.Name = Schemes.DefaultChannelGuestRole
+                        WHERE
+                                RoleSchemes.DefaultChannelGuestRole IN ('channel_admin', 'channel_user')
+
+                        UNION
+
+                        SELECT
+                                Schemes.DefaultChannelGuestRole AS GuestRoleName,
+                                Schemes.DefaultChannelUserRole AS UserRoleName,
+                                Schemes.DefaultChannelAdminRole AS AdminRoleName,
+                                GuestRoles.Permissions AS HigherScopedGuestPermissions,
+                                UserRoles.Permissions AS HigherScopedUserPermissions,
+                                AdminRoles.Permissions AS HigherScopedAdminPermissions
+                        FROM
+                                Schemes
+                                JOIN Channels ON Channels.SchemeId = Schemes.Id
+                                JOIN Teams ON Teams.Id = Channels.TeamId
+                                JOIN Roles AS GuestRoles ON GuestRoles.Name = 'channel_guest'
+                                JOIN Roles AS UserRoles ON UserRoles.Name = 'channel_user'
+                                JOIN Roles AS AdminRoles ON AdminRoles.Name = 'channel_admin'
+                        WHERE
+                                (Schemes.DefaultChannelGuestRole IN ('channel_admin', 'channel_user')
+                                OR Schemes.DefaultChannelUserRole IN ('channel_admin', 'channel_user')
+                                OR Schemes.DefaultChannelAdminRole IN ('channel_admin', 'channel_user'))
+                        AND (Teams.SchemeId = ''
+                                OR Teams.SchemeId IS NULL)
+
+2024-09-28 03:51:58.341 UTC [39] LOG:  execute <unnamed>:
+                SELECT
+                        ChannelMembers.ChannelId,
+                        ChannelMembers.UserId,
+                        ChannelMembers.Roles,
+                        ChannelMembers.LastViewedAt,
+                        ChannelMembers.MsgCount,
+                        ChannelMembers.MentionCount,
+                        ChannelMembers.MentionCountRoot,
+                        COALESCE(ChannelMembers.UrgentMentionCount, 0) AS UrgentMentionCount,
+                        ChannelMembers.MsgCountRoot,
+                        ChannelMembers.NotifyProps,
+                        ChannelMembers.LastUpdateAt,
+                        ChannelMembers.SchemeUser,
+                        ChannelMembers.SchemeAdmin,
+                        ChannelMembers.SchemeGuest,
+                        COALESCE(Teams.DisplayName, '') TeamDisplayName,
+                        COALESCE(Teams.Name, '') TeamName,
+                        COALESCE(Teams.UpdateAt, 0) TeamUpdateAt,
+                        TeamScheme.DefaultChannelGuestRole TeamSchemeDefaultGuestRole,
+                        TeamScheme.DefaultChannelUserRole TeamSchemeDefaultUserRole,
+                        TeamScheme.DefaultChannelAdminRole TeamSchemeDefaultAdminRole,
+                        ChannelScheme.DefaultChannelGuestRole ChannelSchemeDefaultGuestRole,
+                        ChannelScheme.DefaultChannelUserRole ChannelSchemeDefaultUserRole,
+                        ChannelScheme.DefaultChannelAdminRole ChannelSchemeDefaultAdminRole
+                FROM
+                        ChannelMembers
+                INNER JOIN
+                        Channels ON ChannelMembers.ChannelId = Channels.Id
+                LEFT JOIN
+                        Schemes ChannelScheme ON Channels.SchemeId = ChannelScheme.Id
+                LEFT JOIN
+                        Teams ON Channels.TeamId = Teams.Id
+                LEFT JOIN
+                        Schemes TeamScheme ON Teams.SchemeId = TeamScheme.Id
+        WHERE ChannelMembers.UserId = $1 ORDER BY ChannelId ASC Limit $2 Offset $3
+2024-09-28 03:51:58.341 UTC [39] DETAIL:  parameters: $1 = '6ttg4cmhcbb53pnqtq78r555gw', $2 = '200', $3 = '0'
+2024-09-28 03:51:58.343 UTC [39] LOG:  execute <unnamed>: SELECT Pkey FROM PluginKeyValueStore WHERE PluginId = $1 AND (ExpireAt = $2 OR ExpireAt > $3) ORDER BY PKey LIMIT 200 OFFSET 0
+2024-09-28 03:51:58.343 UTC [39] DETAIL:  parameters: $1 = 'com.mattermost.calls', $2 = '0', $3 = '1727495518342'
+2024-09-28 03:51:58.437 UTC [39] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.439 UTC [34] LOG:  statement: SELECT COUNT(*) AS Value FROM Posts p
+2024-09-28 03:51:58.440 UTC [38] LOG:  statement: SELECT COUNT(Id) FROM Users WHERE DeleteAt > 0
+2024-09-28 03:51:58.441 UTC [43] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Status AS s LEFT JOIN Bots ON s.UserId = Bots.UserId LEFT JOIN Users ON s.UserId = Users.Id WHERE LastActivityAt > $1 AND Bots.UserId IS NULL AND Users.DeleteAt = 0
+2024-09-28 03:51:58.441 UTC [43] DETAIL:  parameters: $1 = '1727409118440'
+2024-09-28 03:51:58.442 UTC [42] LOG:  execute <unnamed>: SELECT COUNT(*) AS Value FROM Channels WHERE Type = $1
+2024-09-28 03:51:58.442 UTC [42] DETAIL:  parameters: $1 = 'O'
+2024-09-28 03:51:58.442 UTC [39] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Status AS s LEFT JOIN Bots ON s.UserId = Bots.UserId LEFT JOIN Users ON s.UserId = Users.Id WHERE LastActivityAt > $1 AND Bots.UserId IS NULL AND Users.DeleteAt = 0
+2024-09-28 03:51:58.442 UTC [39] DETAIL:  parameters: $1 = '1724817118439'
+2024-09-28 03:51:58.443 UTC [36] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Teams WHERE DeleteAt = $1
+2024-09-28 03:51:58.443 UTC [36] DETAIL:  parameters: $1 = '0'
+2024-09-28 03:51:58.443 UTC [40] LOG:  execute <unnamed>: SELECT COUNT(*) AS Value FROM Channels WHERE Type = $1
+2024-09-28 03:51:58.443 UTC [40] DETAIL:  parameters: $1 = 'P'
+2024-09-28 03:51:58.453 UTC [40] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.454 UTC [40] LOG:  execute <unnamed>: SELECT
+                                        TO_CHAR(DATE(TO_TIMESTAMP(Posts.CreateAt / 1000)), 'YYYY-MM-DD') AS Name, Count(Posts.Id) AS Value
+                                FROM Posts WHERE Posts.CreateAt <= $1
+                                            AND Posts.CreateAt >= $2
+                                GROUP BY DATE(TO_TIMESTAMP(Posts.CreateAt / 1000))
+                                ORDER BY Name DESC
+                                LIMIT 30
+2024-09-28 03:51:58.454 UTC [40] DETAIL:  parameters: $1 = '1727481599999', $2 = '1724716800000'
+2024-09-28 03:51:58.455 UTC [36] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.456 UTC [34] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.457 UTC [36] LOG:  execute <unnamed>: SELECT
+                                        TO_CHAR(DATE(TO_TIMESTAMP(Posts.CreateAt / 1000)), 'YYYY-MM-DD') AS Name, Count(Posts.Id) AS Value
+                                FROM Posts INNER JOIN Bots ON Posts.UserId = Bots.Userid WHERE Posts.CreateAt <= $1
+                                            AND Posts.CreateAt >= $2
+                                GROUP BY DATE(TO_TIMESTAMP(Posts.CreateAt / 1000))
+                                ORDER BY Name DESC
+                                LIMIT 30
+2024-09-28 03:51:58.457 UTC [36] DETAIL:  parameters: $1 = '1727481599999', $2 = '1724716800000'
+2024-09-28 03:51:58.457 UTC [34] LOG:  execute <unnamed>: SELECT
+                                        TO_CHAR(DATE(TO_TIMESTAMP(Posts.CreateAt / 1000)), 'YYYY-MM-DD') AS Name, COUNT(DISTINCT Posts.UserId) AS Value
+                                FROM Posts WHERE Posts.CreateAt >= $1 AND Posts.CreateAt <= $2
+                                GROUP BY DATE(TO_TIMESTAMP(Posts.CreateAt / 1000))
+                                ORDER BY Name DESC
+                                LIMIT 30
+2024-09-28 03:51:58.457 UTC [34] DETAIL:  parameters: $1 = '1724716800000', $2 = '1727481599999'
+2024-09-28 03:51:58.459 UTC [34] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.459 UTC [34] LOG:  statement: SELECT COUNT(*) FROM OutgoingWebhooks WHERE DeleteAt = 0
+2024-09-28 03:51:58.460 UTC [36] LOG:  execute <unnamed>: SELECT COUNT(*) AS Value FROM Posts p WHERE p.Hashtags <> $1
+2024-09-28 03:51:58.460 UTC [36] DETAIL:  parameters: $1 = ''
+2024-09-28 03:51:58.460 UTC [36] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Commands WHERE DeleteAt = $1
+2024-09-28 03:51:58.460 UTC [36] DETAIL:  parameters: $1 = '0'
+2024-09-28 03:51:58.461 UTC [34] LOG:  execute <unnamed>: SELECT COUNT(*) AS Value FROM Posts p WHERE (p.FileIds <> $1 OR p.Filenames <> $2)
+2024-09-28 03:51:58.461 UTC [34] DETAIL:  parameters: $1 = '[]', $2 = '[]'
+2024-09-28 03:51:58.462 UTC [36] LOG:  execute <unnamed>: SELECT
+                                COUNT(*)
+                        FROM
+                                Sessions
+                        WHERE ExpiresAt > $1
+2024-09-28 03:51:58.462 UTC [36] DETAIL:  parameters: $1 = '1727495518460'
+2024-09-28 03:51:58.462 UTC [34] LOG:  statement: SELECT COUNT(*) FROM IncomingWebhooks WHERE DeleteAt = 0
+2024-09-28 03:51:58.515 UTC [35] LOG:  statement: SELECT COUNT(p.ID) FROM IR_Playbook as p
+2024-09-28 03:51:58.518 UTC [35] LOG:  statement: SELECT COUNT(i.ID) FROM IR_Incident as i
+2024-09-28 03:51:58.531 UTC [34] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE Bots.UserId IS NULL
+2024-09-28 03:51:58.532 UTC [36] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.534 UTC [36] LOG:  execute <unnamed>: SELECT * FROM TrueUpReviewHistory WHERE DueDate = $1
+2024-09-28 03:51:58.534 UTC [36] DETAIL:  parameters: $1 = '1728950400000'
+2024-09-28 03:51:58.591 UTC [36] LOG:  statement: SELECT COUNT(*) FROM Users AS u LEFT JOIN Bots ON u.Id = Bots.UserId WHERE u.DeleteAt = 0 AND Bots.UserId IS NULL
+2024-09-28 03:51:58.593 UTC [40] LOG:  statement: SELECT COUNT(*) AS Value FROM Posts p
+2024-09-28 03:51:58.596 UTC [36] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Status AS s LEFT JOIN Bots ON s.UserId = Bots.UserId LEFT JOIN Users ON s.UserId = Users.Id WHERE LastActivityAt > $1 AND Bots.UserId IS NULL AND Users.DeleteAt = 0
+2024-09-28 03:51:58.596 UTC [36] DETAIL:  parameters: $1 = '1724817118593'
+2024-09-28 03:51:58.597 UTC [36] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Teams WHERE DeleteAt = $1
+2024-09-28 03:51:58.597 UTC [36] DETAIL:  parameters: $1 = '0'
+2024-09-28 03:51:58.599 UTC [38] LOG:  execute <unnamed>: SELECT COUNT(*) AS Value FROM Channels WHERE Type = $1
+2024-09-28 03:51:58.599 UTC [38] DETAIL:  parameters: $1 = 'P'
+2024-09-28 03:51:58.599 UTC [36] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Status AS s LEFT JOIN Bots ON s.UserId = Bots.UserId LEFT JOIN Users ON s.UserId = Users.Id WHERE LastActivityAt > $1 AND Bots.UserId IS NULL AND Users.DeleteAt = 0
+2024-09-28 03:51:58.599 UTC [36] DETAIL:  parameters: $1 = '1727409118597'
+2024-09-28 03:51:58.599 UTC [38] LOG:  statement: SELECT COUNT(Id) FROM Users WHERE DeleteAt > 0
+2024-09-28 03:51:58.603 UTC [34] LOG:  execute <unnamed>: SELECT COUNT(*) AS Value FROM Channels WHERE Type = $1
+2024-09-28 03:51:58.603 UTC [34] DETAIL:  parameters: $1 = 'O'
+2024-09-28 03:51:58.927 UTC [34] LOG:  execute <unnamed>: SELECT * FROM Jobs WHERE Status = $1 ORDER BY CreateAt ASC
+2024-09-28 03:51:58.927 UTC [34] DETAIL:  parameters: $1 = 'pending'
+2024-09-28 03:51:59.443 UTC [34] LOG:  execute <unnamed>: SELECT COUNT(*) FROM Jobs WHERE Status = $1 AND Type = $2
+2024-09-28 03:51:59.443 UTC [34] DETAIL:  parameters: $1 = 'pending', $2 = 'post_persistent_notifications'
+2024-09-28 03:51:59.445 UTC [34] LOG:  execute <unnamed>: SELECT * FROM Jobs WHERE Status IN ($1) AND Type = $2 ORDER BY CreateAt DESC LIMIT 1
+2024-09-28 03:51:59.445 UTC [34] DETAIL:  parameters: $1 = 'success', $2 = 'post_persistent_notifications'
+2024-09-28 03:51:59.445 UTC [34] LOG:  execute <unnamed>: INSERT INTO Jobs (Id,Type,Priority,CreateAt,StartAt,LastActivityAt,Status,Progress,Data) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+2024-09-28 03:51:59.445 UTC [34] DETAIL:  parameters: $1 = 'x9izmm8uq3dwdgcujokiqt7hja', $2 = 'post_persistent_notifications', $3 = '0', $4 = '1727495519445', $5 = '0', $6 = '0', $7 = 'pending', $8 = '0', $9 = 'null'
+2024-09-28 03:51:59.447 UTC [34] LOG:  execute <unnamed>: SELECT * FROM Jobs WHERE Status IN ($1) AND Type = $2 ORDER BY CreateAt DESC LIMIT 1
+2024-09-28 03:51:59.447 UTC [34] DETAIL:  parameters: $1 = 'success', $2 = 'post_persistent_notifications'
+2024-09-28 03:52:06.595 UTC [34] LOG:  execute <unnamed>: SELECT Pkey FROM PluginKeyValueStore WHERE PluginId = $1 AND (ExpireAt = $2 OR ExpireAt > $3) ORDER BY PKey LIMIT 1000 OFFSET 0
+2024-09-28 03:52:06.595 UTC [34] DETAIL:  parameters: $1 = 'playbooks', $2 = '0', $3 = '1727495526594'
+2024-09-28 03:52:13.930 UTC [34] LOG:  execute <unnamed>: SELECT * FROM Jobs WHERE Status = $1 ORDER BY CreateAt ASC
+2024-09-28 03:52:13.930 UTC [34] DETAIL:  parameters: $1 = 'pending'
+2024-09-28 03:52:13.931 UTC [34] LOG:  execute <unnamed>: UPDATE Jobs SET LastActivityAt = $1, Status = $2, StartAt = $3 WHERE Id = $4 AND Status = $5
+2024-09-28 03:52:13.931 UTC [34] DETAIL:  parameters: $1 = '1727495533930', $2 = 'in_progress', $3 = '1727495533930', $4 = 'x9izmm8uq3dwdgcujokiqt7hja', $5 = 'pending'
+2024-09-28 03:52:13.932 UTC [34] LOG:  execute <unnamed>: SELECT * FROM Jobs WHERE Id = $1
+2024-09-28 03:52:13.932 UTC [34] DETAIL:  parameters: $1 = 'x9izmm8uq3dwdgcujokiqt7hja'
+2024-09-28 03:52:13.933 UTC [34] LOG:  execute <unnamed>: SELECT PostId, CreateAt, LastSentAt, DeleteAt, SentCount FROM PersistentNotifications WHERE (DeleteAt = $1 AND CreateAt <= $2 AND LastSentAt <= $3 AND SentCount < $4) LIMIT 500
+2024-09-28 03:52:13.933 UTC [34] DETAIL:  parameters: $1 = '0', $2 = '1727495233932', $3 = '1727495233932', $4 = '6'
+2024-09-28 03:52:13.934 UTC [34] LOG:  execute <unnamed>: UPDATE PersistentNotifications SET DeleteAt = $1 WHERE (DeleteAt = $2 AND SentCount >= $3)
+2024-09-28 03:52:13.934 UTC [34] DETAIL:  parameters: $1 = '1727495533933', $2 = '0', $3 = '6'
+2024-09-28 03:52:13.936 UTC [34] LOG:  execute <unnamed>: UPDATE Jobs SET LastActivityAt = $1, Status = $2, Data = $3, Progress = $4 WHERE Id = $5 AND Status = $6
+2024-09-28 03:52:13.936 UTC [34] DETAIL:  parameters: $1 = '1727495533935', $2 = 'in_progress', $3 = 'null', $4 = '100', $5 = 'x9izmm8uq3dwdgcujokiqt7hja', $6 = 'in_progress'
+2024-09-28 03:52:13.939 UTC [34] LOG:  execute <unnamed>: UPDATE Jobs
+                        SET Status=$1, LastActivityAt=$2
+                        WHERE Id=$3
+2024-09-28 03:52:13.939 UTC [34] DETAIL:  parameters: $1 = 'success', $2 = '1727495533939', $3 = 'x9izmm8uq3dwdgcujokiqt7hja'
