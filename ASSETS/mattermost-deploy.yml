@@ -220,11 +220,6 @@ Resources:
              yum -y update
              yum -y install bind-tools htop telnet net-tools vim git wget
              yum -y install https://ec2-downloads-windows.s3.amazonaws.com/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-             yum -y install awslogs
-             wget https://privo-public-configuration.s3.amazonaws.com/awslogs/amazon-linux/awslogs.conf -O /etc/awslogs/awslogs.conf
-             chkconfig awslogs on
-             sed -i s/us\-east\-1/${AWS::Region}/g /etc/awslogs/awscli.conf
-             service awslogs restart
              reboot
            - { Hostname1: !Ref InstanceHostName}
 
