@@ -16,7 +16,7 @@ Please find below, in a step by step fashion, the answers/results of the tasks a
           ● You can request an enterprise trial on our website or through the server’s system
           console; alternatively, we can email you a license.
 
-For details on the various deployments I tried (all of them), please see assets/README.MD
+For details on the various deployments (I tried all of them), please see assets/README.MD
 
 All steps below were accomplished using the Mattermost Production Docker, with a license requested through the console (the one with the Mattermost and Postgres standalone containers).
 
