@@ -36,7 +36,8 @@ In the server settings for AD/LDAP, I filled in the following settings and left 
     Email Attribute: mail
     Group Display Name Attribute: cn
     Group ID Attribute: entryUUID
-    
+
+Watch those trailing spaces! Hit a snag with the DNS name and weird errors!
 
 Once I had that filled out, I tested connection, synchronized, and then headed over to the Groups configuration panel. There, I selected all the available groups in this server(mathematicians, italians, chemists, etc) and linked them.
 Once linked, I configured each one, turning on "@ mentioning" and adding each of my available channels to the group.
