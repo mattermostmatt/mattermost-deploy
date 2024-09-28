@@ -43,7 +43,7 @@ Once linked, I configured each one, turning on "@ mentioning" and adding each of
 
 You can see my successful @ mention in the Town Squre channel here:
 
-https://postimg.cc/VJY1nk4p
+https://postimg.cc/Pv8C0z7C
 
 #
 
