@@ -53,7 +53,7 @@ https://postimg.cc/Pv8C0z7C
 
 In the Mattermost console, I created a new channel ("webhook-channel" ). Then, in the system settings, I created a new incoming webhook link, assisgned specifically to this channel. To test, I used the following command:
 
-_"curl -i -X POST -H 'Content-Type: application/json' -d '{"text": "Hello! Please give me this job. :D 🎉"}' http://localhost:8065/hooks/joze5qowxt8g7pscezzzfef3he"_
+_"curl -i -X POST -H 'Content-Type: application/json' -d '{"text": "Hello! Please give me this job. :D 🎉"}' http://18.116.62.173:8065/hooks/c3ktf7m7cidemjojnpox5tgfyy"_
 
 You can see the result here:
 
